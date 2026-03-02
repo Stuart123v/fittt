@@ -50,8 +50,10 @@ export default function App() {
   const [creationProgress, setCreationProgress] = useState(0);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [name, setName] = useState('');
   const [selectedPlan, setSelectedPlan] = useState<'1week' | '4weeks' | '12weeks'>('4weeks');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
 
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -75,6 +77,28 @@ export default function App() {
       setCreationProgress(0);
     }
   }, [step]);
+
+  useEffect(() => {
+    if (step === 'checkout') {
+      const timer = setInterval(() => {
+        setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [step]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const scrollToPricing = () => {
+    const pricingSection = document.getElementById('pricing-section');
+    if (pricingSection) {
+      pricingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const calculateBMI = () => {
     if (!height || !weight) return null;
@@ -2829,13 +2853,16 @@ export default function App() {
 
                 <div className="flex items-center gap-8 mb-8">
                   <div className="text-center">
-                    <p className="text-xl font-bold text-neutral-800 mb-1">04:28</p>
+                    <p className="text-xl font-bold text-neutral-800 mb-1">{formatTime(timeLeft)}</p>
                     <div className="flex gap-4 text-[10px] text-neutral-500 uppercase tracking-wider">
                       <span>min</span>
                       <span>seg</span>
                     </div>
                   </div>
-                  <button className="bg-pilates-accent text-white px-8 py-3 rounded-full font-bold hover:bg-pilates-accent/90 transition-colors">
+                  <button 
+                    onClick={scrollToPricing}
+                    className="bg-pilates-accent text-white px-8 py-3 rounded-full font-bold hover:bg-pilates-accent/90 transition-colors"
+                  >
                     Ver mi plan
                   </button>
                 </div>
@@ -2869,7 +2896,7 @@ export default function App() {
               </div>
 
               {/* Pricing Section */}
-              <div className="w-full bg-[#E0F2FE] py-16 px-4 flex flex-col items-center">
+              <div id="pricing-section" className="w-full bg-[#E0F2FE] py-16 px-4 flex flex-col items-center">
                 <h2 className="text-4xl md:text-5xl font-bold text-neutral-800 text-center mb-12 leading-tight">
                   Tu Pilates Asiático<br />Plan es ¡Listo!
                 </h2>
