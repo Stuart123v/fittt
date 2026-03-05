@@ -270,83 +270,66 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white relative overflow-x-hidden flex flex-col">
-      {/* Header */}
-      <header className="w-full p-6 md:px-12 flex items-center justify-center md:justify-between z-20 relative">
-        <div className="flex items-center gap-2">
-          <h1 className="text-3xl font-black tracking-tighter text-neutral-800">PILATES</h1>
-          <span className="bg-neutral-300/50 px-2 py-0.5 rounded text-[10px] font-bold text-neutral-600">by HARNA</span>
-        </div>
-        
-        {step === 'landing' && (
-          <div className="hidden md:flex items-center gap-6">
-            <button className="flex items-center gap-1 font-bold text-neutral-800">
-              EN <ChevronDown size={18} />
-            </button>
-            <button className="text-neutral-800">
-              <Menu size={28} />
-            </button>
+    <div className={`min-h-screen ${step === 'landing' ? 'bg-white' : 'bg-white'} relative overflow-x-hidden flex flex-col transition-colors duration-500 items-center`}>
+      {/* Main Container (for landing) */}
+      <div className={`w-full max-w-[450px] min-h-screen flex flex-col relative ${step === 'landing' ? 'bg-white' : ''}`}>
+        {/* Header */}
+        <header className="w-full p-6 flex items-center justify-between z-20 relative">
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-black tracking-tighter text-neutral-900 uppercase">PILATES</h1>
+            <span className="bg-neutral-100 px-3 py-1 rounded-full text-[9px] font-bold text-neutral-400">by HARNA</span>
           </div>
-        )}
-      </header>
+        </header>
 
-      {/* Main Content */}
-      <main className="flex-grow flex flex-col items-center pt-8 md:pt-12 px-6 relative z-10">
-        <AnimatePresence mode="wait">
-          {step === 'landing' && (
-            <motion.div 
-              key="landing"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="w-full flex flex-col items-center"
-            >
-              <div className="text-center max-w-2xl mb-12">
-                <h2 className="text-4xl md:text-5xl font-bold leading-tight text-neutral-800 mb-4">
-                  Asian Pilates <br />
-                  Program <span className="text-pilates-accent">for Menopausal <br /> Women</span>
-                </h2>
-                <p className="text-lg font-medium text-neutral-700 mb-1">Based on your age</p>
-                <p className="text-[10px] font-bold tracking-widest uppercase text-neutral-800">1-Minute Quiz</p>
-              </div>
-
-              <div className="w-full max-w-md relative flex flex-col mt-4">
-                {/* Mobile Image */}
-                <div className="absolute right-[-20%] bottom-0 w-[80%] pointer-events-none md:hidden z-0">
-                  <img 
-                    src="https://i.postimg.cc/PT9n11v9/photo-4985532981787167626-y-removebg-preview.png" 
-                    alt="Asian Fitness Woman" 
-                    className="w-full h-auto object-contain"
-                    referrerPolicy="no-referrer"
-                  />
+        {/* Main Content */}
+        <main className="flex-grow flex flex-col items-center pt-4 px-6 relative z-10">
+          <AnimatePresence mode="wait">
+            {step === 'landing' && (
+              <motion.div 
+                key="landing"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="w-full flex flex-col items-center"
+              >
+                <div className="text-center w-full mb-8">
+                  <h2 className="text-[2.2rem] font-bold leading-[1.1] text-neutral-800 mb-6 tracking-tight">
+                    Asian Pilates Program <br />
+                    <span className="text-[#B52B65]">for Menopausal <br /> Women</span>
+                  </h2>
+                  <p className="text-sm font-medium text-neutral-500 mb-1">According to your age</p>
+                  <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-neutral-800">1-Minute Quiz</p>
                 </div>
 
-                {/* Buttons */}
-                <div className="w-[75%] md:w-full space-y-4 relative z-10">
-                  {ageRanges.map((range) => (
-                    <button 
-                      key={range}
-                      onClick={() => setStep('community')}
-                      className="w-full bg-gradient-to-r from-white via-white/95 to-white/40 backdrop-blur-sm border border-neutral-200/50 rounded-3xl py-5 px-6 flex items-center justify-between text-xl font-bold text-neutral-800 shadow-sm transition-transform active:scale-95 group"
-                    >
-                      <span>{range}</span>
-                      <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
-                    </button>
-                  ))}
-                </div>
-              </div>
+                <div className="w-full relative flex flex-col items-start">
+                  {/* Image to the right */}
+                  <div className="absolute top-[-5%] right-[-40%] w-[110%] pointer-events-none z-0">
+                    <img 
+                      src="https://i.postimg.cc/PT9n11v9/photo-4985532981787167626-y-removebg-preview.png" 
+                      alt="Asian Fitness Woman" 
+                      className="w-full h-auto object-contain"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
 
-              {/* Desktop Image */}
-              <div className="absolute right-[-5%] bottom-0 w-[60%] max-w-lg pointer-events-none hidden md:block overflow-hidden z-0">
-                <img 
-                  src="https://i.postimg.cc/PT9n11v9/photo-4985532981787167626-y-removebg-preview.png" 
-                  alt="Asian Fitness Woman" 
-                  className="w-full h-auto object-contain"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-            </motion.div>
-          )}
+                  {/* Buttons */}
+                  <div className="w-[70%] space-y-3 relative z-10 mt-4">
+                    {ageRanges.map((range) => (
+                      <button 
+                        key={range}
+                        onClick={() => setStep('community')}
+                        className="w-full bg-white/60 backdrop-blur-md border border-white/30 rounded-[2rem] py-5 px-8 flex items-center justify-between text-2xl font-bold text-black shadow-lg shadow-black/5 transition-transform active:scale-95 group"
+                      >
+                        <span className="flex items-center gap-2">
+                          {range}
+                        </span>
+                        <ArrowRight size={20} strokeWidth={3} className="opacity-40" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
 
           {step === 'community' && (
             <motion.div 
@@ -3276,19 +3259,20 @@ export default function App() {
       </div>
 
       {/* Footer */}
-      <footer className="w-full pt-20 pb-12 px-6 text-center footer-gradient relative z-20 mt-auto">
-        <div className="max-w-3xl mx-auto space-y-8">
-          <p className="text-[11px] text-neutral-500 font-medium leading-relaxed">
-            By choosing your age and continuing, you agree to our <a href="#" className="underline">Terms of Service</a> and acknowledge our <a href="#" className="underline">Privacy Policy</a> and <a href="#" className="underline">Cookie Policy</a>
+      <footer className={`w-full pt-8 pb-12 px-6 text-center relative z-20 mt-auto`}>
+        <div className="max-w-3xl mx-auto space-y-6">
+          <p className={`text-[9px] text-neutral-500 font-medium leading-relaxed`}>
+            By choosing your age and continuing, you agree to our <a href="#" className="underline">Terms of Service</a> and acknowledge our <a href="#" className="underline">Privacy Policy</a> and <a href="#" className="underline">Cookie policy</a>
           </p>
           
-          <div className="h-px bg-neutral-200 w-full" />
+          {step !== 'landing' && <div className="h-px bg-neutral-200 w-full" />}
           
-          <p className="text-[10px] text-neutral-400 leading-relaxed">
+          <p className={`text-[8px] text-neutral-400 leading-relaxed`}>
             This site does not offer medical advice. The content is for general wellness purposes only. Always consult with a healthcare professional before starting any fitness program or if you have any concerns about your health.
           </p>
         </div>
       </footer>
     </div>
+  </div>
   );
 }
